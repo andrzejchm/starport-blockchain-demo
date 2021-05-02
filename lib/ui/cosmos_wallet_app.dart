@@ -1,11 +1,10 @@
 import 'package:cosmos_wallet_flutter/app_widget.dart';
+import 'package:cosmos_wallet_flutter/config/app_environment_provider.dart';
 import 'package:cosmos_wallet_flutter/dependency_injection/app_component.dart';
-import 'package:cosmos_wallet_flutter/ui/core/app_error_page.dart';
-import 'package:cosmos_wallet_flutter/ui/core/app_loading_page.dart';
 import 'package:flutter/material.dart';
 
 class CosmosWalletApp extends StatefulWidget {
-  final String environment;
+  final AppEnvironment environment;
 
   const CosmosWalletApp({Key? key, required this.environment}) : super(key: key);
 
@@ -14,16 +13,8 @@ class CosmosWalletApp extends StatefulWidget {
 }
 
 class _CosmosWalletAppState extends State<CosmosWalletApp> {
-  dynamic _error;
-  bool _initialized = false;
-
   @override
   Widget build(BuildContext context) {
-    if (_error != null) {
-      return AppErrorPage();
-    } else if (!_initialized) {
-      return AppLoadingPage();
-    }
     return AppWidget();
   }
 

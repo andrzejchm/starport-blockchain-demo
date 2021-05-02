@@ -15,6 +15,5 @@ class GetWalletPublicInfoFailure {
       case _GetWalletPublicInfoFailureType.Unknown:
         return DisplayableFailure.commonError();
     }
-    throw StateError("Cannot parse $_type into DisplayableFailure");
   }
 }

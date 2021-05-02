@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 class AppLoadingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Directionality(
+    return const Directionality(
       textDirection: TextDirection.ltr,
       child: Material(
-        color: AppTheme.darkBlue,
+        color: AppTheme.secondaryVariant,
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32.0),
+            padding: EdgeInsets.symmetric(horizontal: 32.0),
             child: CircularProgressIndicator(),
           ),
         ),

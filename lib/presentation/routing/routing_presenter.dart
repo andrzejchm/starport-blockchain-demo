@@ -22,9 +22,9 @@ class RoutingPresenter {
 
     navigator.close();
     if (walletInfo?.hasWallet ?? false) {
-      navigator.openMain(MainInitialParams());
+      navigator.openMain(const MainInitialParams());
     } else {
-      navigator.openWalletSetup(WalletSetupInitialParams());
+      navigator.openWalletSetup(const WalletSetupInitialParams());
     }
   }
 }

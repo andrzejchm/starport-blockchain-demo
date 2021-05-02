@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  static const red = Color(0xFFB25E6B);
-  static const redDark = Color(0xFF8E4C57);
+  static const primary = Color(0xFF4CAF50);
+  static const primaryVariant = Color(0xFF2C8F30);
   static const lightGrey = Color(0xffe4e4e4);
   static const grey = Color(0xFFF1F1F1);
-  static const lightBlue = Color(0xFF8E95A8);
-  static const darkBlue = Color(0xFF39385A);
+  static const secondary = Color(0xFF3F51B5);
+  static const secondaryVariant = Color(0xFF303F9F);
   static const green = Color(0xFF5EB16D);
   static const orange = Color(0xFFF5A623);
   static const purple = Color(0xFF9013FE);
@@ -38,6 +38,10 @@ class AppTheme {
 
   static const elevationS = 4.0;
 
+  static const cardShape = RoundedRectangleBorder(
+    borderRadius: AppTheme.borderRadiusM,
+  );
+
   static const boxShadowS = BoxShadow(
     color: Colors.black26,
     offset: Offset(0, 2),
@@ -50,19 +54,19 @@ class AppTheme {
 
   static ThemeData buildAppTheme() {
     const colorScheme = ColorScheme(
-      primary: red,
-      primaryVariant: redDark,
+      primary: primary,
+      primaryVariant: primaryVariant,
       onPrimary: offWhite,
-      secondary: lightBlue,
-      secondaryVariant: darkBlue,
+      secondary: secondary,
+      secondaryVariant: secondaryVariant,
       onSecondary: offWhite,
       background: offWhite,
-      onBackground: darkBlue,
+      onBackground: Colors.black87,
       surface: Colors.white,
-      onSurface: darkBlue,
+      onSurface: Colors.black87,
       brightness: Brightness.light,
       onError: offWhite,
-      error: red,
+      error: primary,
     );
     return ThemeData(
         scaffoldBackgroundColor: offWhite,
@@ -76,42 +80,42 @@ class AppTheme {
           subtitle2: const TextStyle(
             fontSize: 17,
             fontWeight: FontWeight.w400,
-            color: darkBlue,
+            color: Colors.black87,
           ),
           headline1: const TextStyle(
             fontSize: 40,
             fontWeight: FontWeight.w800,
-            color: darkBlue,
+            color: Colors.black87,
           ),
           headline2: const TextStyle(
             fontSize: 26,
             fontWeight: FontWeight.w700,
-            color: darkBlue,
+            color: Colors.black87,
           ),
           headline5: const TextStyle(
             fontSize: 17,
             fontWeight: FontWeight.w900,
-            color: darkBlue,
+            color: Colors.black87,
           ),
           headline6: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w700,
-            color: darkBlue,
+            color: Colors.black87,
           ),
           caption: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w400,
-            color: darkBlue.withOpacity(0.7),
+            color: Colors.black87.withOpacity(0.7),
           ),
           bodyText1: const TextStyle(
             fontSize: 17,
             fontWeight: FontWeight.w400,
-            color: darkBlue,
+            color: Colors.black87,
           ),
           bodyText2: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w400,
-            color: darkBlue,
+            color: Colors.black87,
           ),
         ));
   }
