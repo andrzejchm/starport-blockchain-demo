@@ -1,0 +1,3 @@
+class EditTransactionInitialParams {
+  const EditTransactionInitialParams();
+}

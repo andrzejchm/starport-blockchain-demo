@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 
 class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   final WalletPublicInfo walletInfo;
+  final VoidCallback onWalletClicked;
 
   const MainAppBar({
     Key? key,
     required this.walletInfo,
+    required this.onWalletClicked,
   }) : super(key: key);
 
   @override
@@ -16,7 +18,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: Padding(
         padding: const EdgeInsets.all(AppTheme.spacingM),
-        child: CurrentWalletBadge(walletInfo: walletInfo),
+        child: CurrentWalletBadge(walletInfo: walletInfo, onClicked: onWalletClicked),
       ),
     );
   }

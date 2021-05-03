@@ -70,8 +70,6 @@ class _WalletSetupPageState extends State<WalletSetupPage> {
         child = CreateWallet(
           createWalletClicked: presenter.createWalletClicked,
           nameChanged: presenter.walletNameChanged,
-          passwordChanged: presenter.walletPasswordChanged,
-          confirmPasswordChanged: presenter.walletConfirmPasswordChanged,
         );
         break;
       case WalletSetupViewMode.importWallet:

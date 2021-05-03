@@ -42,7 +42,6 @@ class _CosmosTextFieldState extends State<CosmosTextField> {
 
   @override
   Widget build(BuildContext context) {
-    final radius = AppTheme.borderRadiusM;
     final focusedColor = Theme.of(context).colorScheme.primary;
     return Card(
       color: Colors.white,
@@ -53,13 +52,14 @@ class _CosmosTextFieldState extends State<CosmosTextField> {
           color: _hasFocus ? focusedColor : Colors.black12,
           width: 0,
         ),
-        borderRadius: radius,
+        borderRadius: AppTheme.borderRadiusM,
       ),
       child: ClipRRect(
-          borderRadius: radius,
+          borderRadius: AppTheme.borderRadiusM,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppTheme.spacingS),
             child: TextField(
+              maxLines: null,
               onChanged: widget.onChanged,
               controller: widget.controller,
               obscureText: widget.obscureText,

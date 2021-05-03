@@ -11,7 +11,7 @@ void main() {
   EquatableConfig.stringify = true;
   FlutterError.onError = (err) => logError(err.exception, err.stack);
   runZonedGuarded(
-    () => runApp(const CosmosWalletApp(environment: AppEnvironment.production)),
+    () => runApp(const CosmosWalletApp(environment: AppEnvironment.local)),
     (error, stack) => logError(error, stack),
   );
 }

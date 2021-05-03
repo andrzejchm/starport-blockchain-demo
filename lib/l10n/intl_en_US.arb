@@ -26,5 +26,20 @@
   "recoveryPhraseHint": "Recovery phrase",
   "invalidMnemonicTitle": "Invalid Mnemonic",
   "invalidMnemonicMessage": "Mnemonic phrase you've entered is not a valid lis of 24 words",
-  "createTransactionAction": "Send transaction"
+  "createTransactionAction": "Send transaction",
+  "addressHint": "Address",
+  "amountHint": "Amount",
+  "addMemoAction": "Add Memo",
+  "memoHint": "Memo",
+  "walletInfoUnavailableTitle": "Wallet info unavailable",
+  "walletInfoUnavailableMessage": "Could not access wallet info",
+  "noBiometricSensorTitle": "No biometric sensor",
+  "noBiometricSensorMessage": "You have not set up any biometric sensor (Fingerprint nor Face ID) or your device does no support it",
+  "biometricScanWalletAccessRationale": "Authenticate in order to access your wallet",
+  "notAuthenticatedTitle": "Not Authenticated",
+  "notAuthenticatedMessage": "Biometric authentication failed. please try again",
+  "walletMenu": "Wallet menu",
+  "logOut": "Log out",
+  "cancelAction": "Cancel",
+  "transactionSentSuccessfullyMessage": "Transaction sent successfully"
 }

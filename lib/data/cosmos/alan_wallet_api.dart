@@ -5,27 +5,26 @@ import 'package:cosmos_wallet_flutter/domain/model/create_wallet_form.dart';
 import 'package:cosmos_wallet_flutter/domain/model/failures/create_wallet_failure.dart';
 import 'package:cosmos_wallet_flutter/domain/model/failures/get_token_balances_failure.dart';
 import 'package:cosmos_wallet_flutter/domain/model/failures/import_wallet_failure.dart';
+import 'package:cosmos_wallet_flutter/domain/model/failures/send_transaction_failure.dart';
 import 'package:cosmos_wallet_flutter/domain/model/token_balance.dart';
 import 'package:cosmos_wallet_flutter/domain/model/token_balances.dart';
+import 'package:cosmos_wallet_flutter/domain/model/transaction.dart';
+import 'package:cosmos_wallet_flutter/domain/model/transaction_form.dart';
 import 'package:cosmos_wallet_flutter/domain/model/wallet_private_info.dart';
 import 'package:cosmos_wallet_flutter/domain/model/wallet_public_info.dart';
 import 'package:cosmos_wallet_flutter/domain/repositories/wallet_api.dart';
+import 'package:cosmos_wallet_flutter/domain/transaction_sender.dart';
 import 'package:cosmos_wallet_flutter/utils/logger.dart';
 import 'package:dartz/dartz.dart';
 
 class AlanWalletApi extends WalletApi {
   final AppEnvironmentProvider appEnvironmentProvider;
-
-  NetworkInfo get _networkInfo => NetworkInfo(
-        bech32Hrp: appEnvironmentProvider.bech32Hrp,
-        fullNodeHost: appEnvironmentProvider.lcdUrl,
-        gRPCPort: appEnvironmentProvider.grpcPort,
-        lcdPort: appEnvironmentProvider.lcdPort,
-      );
+  final TransactionSender transactionSender;
+  final NetworkInfo _networkInfo;
 
   late bank.QueryClient _client;
 
-  AlanWalletApi(this.appEnvironmentProvider) {
+  AlanWalletApi(this.appEnvironmentProvider, this.transactionSender, this._networkInfo) {
     final _clientChannel = appEnvironmentProvider.buildClientChannel();
     _client = bank.QueryClient(_clientChannel);
   }
@@ -81,4 +80,8 @@ class AlanWalletApi extends WalletApi {
       return left(const ImportWalletFailure.unknown());
     }
   }
+
+  @override
+  Future<Either<SendTransactionFailure, TransactionHash>> sendTransaction(TransactionForm transactionForm) async =>
+      transactionSender.sendTransaction(transactionForm);
 }

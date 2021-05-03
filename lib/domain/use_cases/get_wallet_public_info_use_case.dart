@@ -11,11 +11,8 @@ class GetWalletPublicInfoUseCase {
   GetWalletPublicInfoUseCase(this._walletSecureStorage, this._walletStore);
 
   Future<Either<GetWalletPublicInfoFailure, WalletPublicInfo>> execute() async {
-    final walletInfoResult = await _walletSecureStorage.getWalletPrivateInfo();
-    walletInfoResult.fold(
-      (l) => null,
-      (info) => _walletStore.walletInfo = info.publicInfo,
-    );
-    return walletInfoResult.map((info) => info.publicInfo);
+    final infoResult = await _walletSecureStorage.getWalletPublicInfo();
+    infoResult.fold((_) => null, (info) => _walletStore.walletInfo = info);
+    return infoResult;
   }
 }

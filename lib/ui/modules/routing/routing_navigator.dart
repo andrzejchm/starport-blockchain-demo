@@ -20,6 +20,7 @@ class RoutingNavigator with NoRoutes, CloseRoute, MainRoute, WalletSetupRoute {
 abstract class RoutingRoute {
   Future<void> openRouting({required RoutingInitialParams initialParams}) async {
     appNavigator.popUntilRoot(context);
+
     return appNavigator.push<void>(
       context,
       fadeInRoute(RoutingPage(initialParams: initialParams)),

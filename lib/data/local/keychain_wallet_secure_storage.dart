@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:cosmos_wallet_flutter/data/local/model/wallet_private_info_local_json.dart';
+import 'package:cosmos_wallet_flutter/domain/model/failures/get_wallet_private_info_failure.dart';
 import 'package:cosmos_wallet_flutter/domain/model/failures/get_wallet_public_info_failure.dart';
 import 'package:cosmos_wallet_flutter/domain/model/failures/save_wallet_public_info_failure.dart';
 import 'package:cosmos_wallet_flutter/domain/model/wallet_private_info.dart';
+import 'package:cosmos_wallet_flutter/domain/model/wallet_public_info.dart';
 import 'package:cosmos_wallet_flutter/domain/secure_storage/wallet_secure_storage.dart';
 import 'package:cosmos_wallet_flutter/domain/utils/utils.dart';
 import 'package:cosmos_wallet_flutter/utils/logger.dart';
@@ -17,7 +19,7 @@ class KeychainWalletSecureStorage implements WalletSecureStorage {
   KeychainWalletSecureStorage() : _storage = const FlutterSecureStorage();
 
   @override
-  Future<Either<GetWalletPublicInfoFailure, WalletPrivateInfo>> getWalletPrivateInfo() async {
+  Future<Either<GetWalletPrivateInfoFailure, WalletPrivateInfo>> getWalletPrivateInfo() async {
     try {
       final infoString = await _storage.read(key: KEY_PRIVATE_WALLET_INFO);
       if (isNullOrBlank(infoString)) {
@@ -27,16 +29,16 @@ class KeychainWalletSecureStorage implements WalletSecureStorage {
       }
     } catch (e, stack) {
       logError(e, stack);
-      return left(const GetWalletPublicInfoFailure.unknown());
+      return left(const GetWalletPrivateInfoFailure.unknown());
     }
   }
 
   @override
-  Future<Either<SaveWalletPublicInfoFailure, Unit>> saveWalletPrivateInfo(WalletPrivateInfo walletInfo) async {
+  Future<Either<SaveWalletPublicInfoFailure, Unit>> saveWalletPrivateInfo(WalletPrivateInfo? walletInfo) async {
     try {
       await _storage.write(
         key: KEY_PRIVATE_WALLET_INFO,
-        value: jsonEncode(WalletPrivateInfoLocalJson.fromDomain(walletInfo).toJson()),
+        value: walletInfo == null ? null : jsonEncode(WalletPrivateInfoLocalJson.fromDomain(walletInfo).toJson()),
       );
       return right(unit);
     } catch (e, stack) {
@@ -44,4 +46,9 @@ class KeychainWalletSecureStorage implements WalletSecureStorage {
       return left(const SaveWalletPublicInfoFailure.unknown());
     }
   }
+
+  @override
+  Future<Either<GetWalletPublicInfoFailure, WalletPublicInfo>> getWalletPublicInfo() => getWalletPrivateInfo()
+      .mapSuccess((response) => response.publicInfo)
+      .mapError((fail) => const GetWalletPublicInfoFailure.unknown());
 }

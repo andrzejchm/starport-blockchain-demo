@@ -23,5 +23,6 @@ class WalletPublicInfoLocalJson {
       );
 
   WalletPublicInfoLocalJson.fromDomain(WalletPublicInfo walletPublicInfo)
-      : publicAddress = walletPublicInfo.publicAddress;
+      : publicAddress = walletPublicInfo.publicAddress,
+        name = walletPublicInfo.name;
 }

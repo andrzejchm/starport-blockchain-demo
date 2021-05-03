@@ -38,10 +38,6 @@ class WalletSetupPresenter {
 
   void walletNameChanged(String value) => _model.walletName = value;
 
-  void walletPasswordChanged(String value) => _model.password = value;
-
-  void walletConfirmPasswordChanged(String value) => _model.confirmPassword = value;
-
   void mnemonicSavedClicked() {
     navigator.close();
     navigator.openRouting(initialParams: const RoutingInitialParams());

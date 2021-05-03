@@ -35,16 +35,10 @@ class WalletSetupPresentationModel with WalletSetupPresentationModelBase impleme
 
   String get walletName => _walletName.value;
 
-  String get password => _password.value;
-
-  String get confirmPassword => _confirmPassword.value;
-
   ObservableFuture<Either<CreateWalletFailure, WalletPrivateInfo>>? get createWalletFuture => _createWalletFuture.value;
 
   CreateWalletForm get createWalletForm => CreateWalletForm(
         name: walletName,
-        password: password,
-        confirmPassword: confirmPassword,
       );
 
   @override
@@ -64,17 +58,6 @@ abstract class WalletSetupPresentationModelBase {
   final Observable<WalletSetupViewMode> _currentViewMode = Observable(WalletSetupViewMode.intro);
 
   set currentViewMode(WalletSetupViewMode value) => Action(() => _currentViewMode.value = value)();
-
-  //////////////////////////////////////
-  final Observable<String> _confirmPassword = Observable("");
-
-  set confirmPassword(String value) => Action(() => _confirmPassword.value = value)();
-
-  //////////////////////////////////////
-  final Observable<String> _password = Observable("");
-
-  set password(String value) => Action(() => _password.value = value)();
-
   //////////////////////////////////////
   final Observable<String> _walletName = Observable("");
 

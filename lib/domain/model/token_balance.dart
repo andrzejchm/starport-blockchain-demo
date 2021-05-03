@@ -5,8 +5,8 @@ class TokenBalance extends Equatable {
   final String amount;
 
   const TokenBalance({
-    required this.denom,
-    required this.amount,
+    this.denom = '',
+    this.amount = '0',
   });
 
   @override

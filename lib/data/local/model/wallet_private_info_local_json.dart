@@ -9,10 +9,12 @@ part 'wallet_private_info_local_json.g.dart';
 class WalletPrivateInfoLocalJson {
   List<int>? privateKey;
   WalletPublicInfoLocalJson? publicInfo;
+  List<String>? mnemonic;
 
   WalletPrivateInfoLocalJson({
     required this.privateKey,
     required this.publicInfo,
+    required this.mnemonic,
   });
 
   factory WalletPrivateInfoLocalJson.fromJson(Map<String, dynamic> json) => _$WalletPrivateInfoLocalJsonFromJson(json);
@@ -22,9 +24,11 @@ class WalletPrivateInfoLocalJson {
   WalletPrivateInfo toDomain() => WalletPrivateInfo(
         privateKey: privateKey ?? [],
         publicInfo: publicInfo?.toDomain() ?? const WalletPublicInfo(),
+        mnemonic: mnemonic ?? [],
       );
 
   WalletPrivateInfoLocalJson.fromDomain(WalletPrivateInfo walletPrivateInfo)
       : privateKey = walletPrivateInfo.privateKey,
+        mnemonic = walletPrivateInfo.mnemonic,
         publicInfo = WalletPublicInfoLocalJson.fromDomain(walletPrivateInfo.publicInfo);
 }

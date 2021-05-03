@@ -1,9 +1,14 @@
+import 'package:cosmos_wallet_flutter/domain/model/failures/log_out_failure.dart';
 import 'package:cosmos_wallet_flutter/domain/use_cases/get_address_received_transactions_use_case.dart';
 import 'package:cosmos_wallet_flutter/domain/use_cases/get_address_sent_transactions_use_case.dart';
 import 'package:cosmos_wallet_flutter/domain/use_cases/get_token_balances_use_case.dart';
+import 'package:cosmos_wallet_flutter/domain/use_cases/log_out_use_case.dart';
 import 'package:cosmos_wallet_flutter/domain/utils/utils.dart';
+import 'package:cosmos_wallet_flutter/presentation/edit_transaction/edit_transaction_initial_params.dart';
 import 'package:cosmos_wallet_flutter/presentation/main/main_presentation_model.dart';
+import 'package:cosmos_wallet_flutter/presentation/routing/routing_initial_params.dart';
 import 'package:cosmos_wallet_flutter/ui/modules/main/main_navigator.dart';
+import 'package:dartz/dartz.dart';
 
 class MainPresenter {
   MainPresenter(
@@ -12,6 +17,7 @@ class MainPresenter {
     this._getTokenBalancesUseCase,
     this._getSentTransactionsUseCase,
     this._getReceivedTransactionsUseCase,
+    this._logOutUseCase,
   );
 
   final MainPresentationModel _model;
@@ -19,33 +25,50 @@ class MainPresenter {
   final GetTokenBalancesUseCase _getTokenBalancesUseCase;
   final GetAddressSentTransactionsUseCase _getSentTransactionsUseCase;
   final GetAddressReceivedTransactionsUseCase _getReceivedTransactionsUseCase;
+  final LogOutUseCase _logOutUseCase;
 
   MainViewModel get viewModel => _model;
 
   void init() => _loadBalances();
 
-  void _loadBalances() {
+  Future<void> _loadBalances() async {
     _model.getTokenBalancesFuture = _getTokenBalancesUseCase
         .execute(_model.walletPublicInfo) //
         .observableDoOn(
           (fail) => navigator.showError(fail.displayableFailure()),
-          (balances) => _model.tokenBalances = balances,
+          (balances) => unit,
         );
     _model.getReceivedTransactionsFuture = _getReceivedTransactionsUseCase
-        .execute(_model.paginatedReceivedTransactions.nextPage, _model.walletPublicInfo) //
+        .execute() //
         .observableDoOn(
           (fail) => navigator.showError(fail.displayableFailure()),
-          (receivedTransactions) => _model.paginatedReceivedTransactions =
-              _model.paginatedReceivedTransactions.byAppending(receivedTransactions),
+          (receivedTransactions) => unit,
         );
     _model.getSentTransactionsFuture = _getSentTransactionsUseCase
-        .execute(_model.paginatedReceivedTransactions.nextPage, _model.walletPublicInfo) //
+        .execute() //
         .observableDoOn(
           (fail) => navigator.showError(fail.displayableFailure()),
-          (sentTransactions) =>
-              _model.paginatedSentTransactions = _model.paginatedSentTransactions.byAppending(sentTransactions),
+          (sentTransactions) => unit,
+        );
+    await Future.wait([
+      _model.getTokenBalancesFuture!,
+      _model.getReceivedTransactionsFuture!,
+      _model.getSentTransactionsFuture!,
+    ]);
+  }
+
+  void createTransactionClicked() => navigator.openEditTransaction(const EditTransactionInitialParams());
+
+  void walletClicked() => navigator.openWalletMoreMenu(
+        logoutClicked: () => _logOut(),
+      );
+
+  Future<Either<LogOutFailure, Unit>> _logOut() {
+    return navigator.showProgressDialog(future: _logOutUseCase.execute()).doOn(
+          fail: (fail) => navigator.showError(fail.displayableFailure()),
+          success: (success) => navigator.openRouting(initialParams: const RoutingInitialParams()),
         );
   }
 
-  void createTransactionClicked() {} //TODO
+  Future<void> onRefresh() => _loadBalances();
 }

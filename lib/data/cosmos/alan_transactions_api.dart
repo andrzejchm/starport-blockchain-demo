@@ -51,38 +51,42 @@ class AlanTransactionsApi extends TransactionsApi {
       ),
     );
     final items = List<Transaction>.unmodifiable(
-      result.txResponses.toImmutableList().mapIndexed(
-        (idx, txResponse) {
-          final tx = result.txs[idx];
-          final attrs = txResponse.logs
-              .toImmutableList()
-              .flatMap((it) => it.events.toImmutableList())
-              .flatMap((it) => it.attributes.toImmutableList());
-          final amountString = attrs.firstOrNull((it) => it.key == 'amount')?.value ?? "";
-          var amount = "";
-          var token = "";
-          final index = amountString.indexOf(RegExp("[a-zA-Z]"));
-          if (index != -1) {
-            amount = amountString.substring(0, index);
-            token = amountString.substring(index);
-          } else if (amountString.isNotEmpty) {
-            token = amountString;
-          }
-          final fromAddress = attrs.firstOrNull((it) => it.key.trim() == "sender")?.value ?? "";
-          final toAddress = attrs.firstOrNull((it) => it.key.trim() == "recipient")?.value ?? "";
-          final action = attrs.firstOrNull((it) => it.key.trim() == "action")?.value ?? "";
-          return Transaction(
-            hash: txResponse.txhash,
-            isSuccessful: txResponse.isSuccessful,
-            fromAddress: fromAddress,
-            toAddress: toAddress,
-            action: action,
-            amount: amount,
-            tokenDenom: token,
-            memo: tx.body.memo,
-          );
-        },
-      ).asList(),
+      result.txResponses
+          .toImmutableList()
+          .mapIndexed(
+            (idx, txResponse) {
+              final tx = result.txs[idx];
+              final attrs = txResponse.logs
+                  .toImmutableList()
+                  .flatMap((it) => it.events.toImmutableList())
+                  .flatMap((it) => it.attributes.toImmutableList());
+              final amountString = attrs.firstOrNull((it) => it.key == 'amount')?.value ?? "";
+              var amount = "";
+              var token = "";
+              final index = amountString.indexOf(RegExp("[a-zA-Z]"));
+              if (index != -1) {
+                amount = amountString.substring(0, index);
+                token = amountString.substring(index);
+              } else if (amountString.isNotEmpty) {
+                token = amountString;
+              }
+              final fromAddress = attrs.firstOrNull((it) => it.key.trim() == "sender")?.value ?? "";
+              final toAddress = attrs.firstOrNull((it) => it.key.trim() == "recipient")?.value ?? "";
+              final action = attrs.firstOrNull((it) => it.key.trim() == "action")?.value ?? "";
+              return Transaction(
+                hash: TransactionHash(txResponse.txhash),
+                isSuccessful: txResponse.isSuccessful,
+                fromAddress: fromAddress,
+                toAddress: toAddress,
+                action: action,
+                amount: amount,
+                tokenDenom: token,
+                memo: tx.body.memo,
+              );
+            },
+          )
+          .reversed()
+          .asList(),
     );
     return right(PaginatedList(
       nextPage: pagination.nextPage(),

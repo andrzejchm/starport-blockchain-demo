@@ -25,7 +25,7 @@ class TransactionRow extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            transaction.hash,
+            transaction.hash.value,
             maxLines: 1,
             style: const TextStyle(color: Colors.black38, fontSize: 10),
           ),

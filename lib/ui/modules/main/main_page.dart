@@ -34,7 +34,7 @@ class _MainPageState extends State<MainPage> {
     super.initState();
     presenter = widget.presenter ??
         getIt(
-          param1: MainPresentationModel(widget.initialParams, getIt()),
+          param1: MainPresentationModel(widget.initialParams, getIt(), getIt()),
           param2: getIt<MainNavigator>(),
         );
     presenter.navigator.context = context;
@@ -45,46 +45,54 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Observer(
       builder: (context) => Scaffold(
-        appBar: MainAppBar(walletInfo: model.walletPublicInfo),
+        appBar: MainAppBar(
+          walletInfo: model.walletPublicInfo,
+          onWalletClicked: presenter.walletClicked,
+        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: CreateTransactionButton(
           createTransactionClicked: presenter.createTransactionClicked,
         ),
         body: SafeArea(
-          child: Center(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(AppTheme.spacingL),
-                  child: AssetsSection(
-                    tokenBalances: model.tokenBalances,
-                    isLoading: model.isLoadingBalances,
+          child: RefreshIndicator(
+            onRefresh: () => presenter.onRefresh(),
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(AppTheme.spacingL),
+                    child: AssetsSection(
+                      tokenBalances: model.tokenBalances,
+                      isLoading: model.isLoadingBalances,
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppTheme.spacingL),
-                  child: TransactionsSection(
-                    transactions: model.receivedTransactions,
-                    isLoading: model.isLoadingReceivedTransactions,
-                    title: S.of(context).receivedTransactions,
-                    walletPublicInfo: model.walletPublicInfo,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: AppTheme.spacingL),
+                    child: TransactionsSection(
+                      transactions: model.receivedTransactions,
+                      isLoading: model.isLoadingReceivedTransactions,
+                      title: S.of(context).receivedTransactions,
+                      walletPublicInfo: model.walletPublicInfo,
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: AppTheme.spacingL,
-                    right: AppTheme.spacingL,
-                    top: AppTheme.spacingS,
-                    bottom: AppTheme.spacingL,
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: AppTheme.spacingL,
+                      right: AppTheme.spacingL,
+                      top: AppTheme.spacingS,
+                      bottom: AppTheme.spacingL,
+                    ),
+                    child: TransactionsSection(
+                      transactions: model.sentTransactions,
+                      isLoading: model.isLoadingSentTransactions,
+                      title: S.of(context).sentTransactions,
+                      walletPublicInfo: model.walletPublicInfo,
+                    ),
                   ),
-                  child: TransactionsSection(
-                    transactions: model.sentTransactions,
-                    isLoading: model.isLoadingSentTransactions,
-                    title: S.of(context).sentTransactions,
-                    walletPublicInfo: model.walletPublicInfo,
-                  ),
-                ),
-              ],
+                  const SizedBox(height: AppTheme.spacingXL * 2),
+                ],
+              ),
             ),
           ),
         ),

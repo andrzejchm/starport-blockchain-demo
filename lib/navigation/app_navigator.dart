@@ -10,7 +10,12 @@ class AppNavigator {
 
   void closeWithResult<T>(BuildContext context, T result) => _navigator(context).pop(result);
 
-  void popUntilRoot(BuildContext context) => _navigator(context).popUntil((route) => route.isFirst);
+  void popUntilRoot(BuildContext context) {
+    _navigator(context).popUntil((route) => route.isFirst);
+    if (_navigator(context).canPop()) {
+      _navigator(context).pop();
+    }
+  }
 }
 
 Route<T> fadeInRoute<T>(Widget page, {int durationMillis = 250}) => PageRouteBuilder<T>(
